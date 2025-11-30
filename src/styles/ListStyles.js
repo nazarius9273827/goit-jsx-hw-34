@@ -12,14 +12,11 @@ export const ListItem = styled.li`
   list-style: none;
   padding: 12px 16px;
   border-radius: 12px;
-
   background: #ddf8ffff;
   border: 1px solid #87F6FF;
-
   display: flex;
   justify-content: space-between;
   align-items: center;
-
   font-size: 16px;
 `;
 

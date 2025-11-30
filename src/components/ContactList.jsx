@@ -1,16 +1,14 @@
 import { useSelector, useDispatch } from "react-redux";
-import { deleteContact } from "../redux/contactsSlice";
+import { selectFilteredContacts } from "../redux/selectors/filteredContactsSelector";
+import { selectIsLoading, selectError } from "../redux/contacts/contactsSelectors";
+import { deleteContact } from "../redux/contacts/contactsSlice";
 import { List, ListItem, DeleteButton } from "../styles/ListStyles";
 
 export default function ContactList() {
-  const { items, isLoading, error } = useSelector((state) => state.contacts);
-  const filter = useSelector((state) => state.filter);
-
+  const contacts = useSelector(selectFilteredContacts);
+  const isLoading = useSelector(selectIsLoading);
+  const error = useSelector(selectError);
   const dispatch = useDispatch();
-
-  const filtered = items.filter((c) =>
-    c.name.toLowerCase().includes(filter.toLowerCase())
-  );
 
   return (
     <>
@@ -18,7 +16,7 @@ export default function ContactList() {
       {error && <p style={{ color: "red" }}>{error}</p>}
 
       <List>
-        {filtered.map(({ id, name, number }) => (
+        {contacts.map(({ id, name, number }) => (
           <ListItem key={id}>
             {name}: {number}
             <DeleteButton onClick={() => dispatch(deleteContact(id))}>
