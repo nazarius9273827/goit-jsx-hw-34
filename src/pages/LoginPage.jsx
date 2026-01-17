@@ -1,73 +1,27 @@
-import React, { useState } from "react";
-import {
-  Heading,
-  VStack,
-  Field,
-  FieldLabel,
-  FieldErrorText,
-  Input,
-  Button,
-  Alert,
-  AlertTitle,
-  AlertDescription,
-} from "@chakra-ui/react";
+import { Button, Input, VStack, Heading } from "@chakra-ui/react";
+import { useDispatch } from "react-redux";
+import { login } from "../redux/auth/authOperations";
 
-const LoginPage = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState(null);
+export default function LoginPage() {
+  const dispatch = useDispatch();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = e => {
     e.preventDefault();
-    // логіка логіну
-    if (!email || !password) {
-      setError("Будь ласка, заповніть всі поля");
-    } else {
-      setError(null);
-      console.log("Login data:", { email, password });
-    }
+    const form = e.target;
+    dispatch(login({
+      email: form.email.value,
+      password: form.password.value,
+    }));
   };
 
   return (
-    <VStack spacing={6} align="stretch" maxW="400px" mx="auto" mt="10">
-      <Heading textAlign="center">Вхід</Heading>
-
-      {error && (
-        <Alert status="error">
-          <AlertTitle>Помилка</AlertTitle>
-          <AlertDescription>{error}</AlertDescription>
-        </Alert>
-      )}
-
+    <VStack mt={10}>
+      <Heading>Login</Heading>
       <form onSubmit={handleSubmit}>
-        <VStack spacing={4} align="stretch">
-          <Field>
-            <FieldLabel>Email</FieldLabel>
-            <Input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <FieldErrorText>{!email && "Email обов'язковий"}</FieldErrorText>
-          </Field>
-
-          <Field>
-            <FieldLabel>Пароль</FieldLabel>
-            <Input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <FieldErrorText>{!password && "Пароль обов'язковий"}</FieldErrorText>
-          </Field>
-
-          <Button type="submit" colorScheme="blue">
-            Увійти
-          </Button>
-        </VStack>
+        <Input name="email" placeholder="Email" />
+        <Input name="password" type="password" placeholder="Password" />
+        <Button type="submit">Login</Button>
       </form>
     </VStack>
   );
-};
-
-export default LoginPage;
+}

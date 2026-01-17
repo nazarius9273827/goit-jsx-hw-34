@@ -1,40 +1,21 @@
-// import { Link } from "react-router-dom";
-// import { useSelector } from "react-redux";
-// import UserMenu from "./UserMenu";
-// import { selectToken } from "../redux/auth/authSelectors";
+import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { HStack, Button } from "@chakra-ui/react";
+import { selectIsLoggedIn } from "../redux/auth/authSelectors";
 
-// export default function Navigation() {
-//   const token = useSelector(selectToken); // безпечний доступ через селектор
+export default function Navigation() {
+  const isLoggedIn = useSelector(selectIsLoggedIn);
 
-//   return (
-//     <nav style={{
-//       display: "flex",
-//       gap: 20,
-//       padding: 15,
-//       borderBottom: "1px solid #ccc",
-//       alignItems: "center"
-//     }}>
-//       {!token && (
-//         <>
-//           <Link to="/register">Register</Link>
-//           <Link to="/login">Login</Link>
-//         </>
-//       )}
-
-//       {token && <Link to="/contacts">Contacts</Link>}
-//       {token && <UserMenu />}
-//     </nav>
-//   );
-// }
-
-const Navigation = () => {
   return (
-    <nav>
-      <a href="/login">Login</a> |{" "}
-      <a href="/register">Register</a> |{" "}
-      <a href="/contacts">Contacts</a>
-    </nav>
+    <HStack p={4} gap={4}>
+      {isLoggedIn ? (
+        <Link to="/contacts">Contacts</Link>
+      ) : (
+        <>
+          <Link to="/login">Login</Link>
+          <Link to="/register">Register</Link>
+        </>
+      )}
+    </HStack>
   );
-};
-
-export default Navigation;
+}
