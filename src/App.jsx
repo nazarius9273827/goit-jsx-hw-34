@@ -1,30 +1,33 @@
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { fetchContacts } from "./redux/contacts/contactsSlice";
-import { Container, Title, SectionTitle } from "./styles/AppStyles";
-import ContactForm from "./components/ContactForm";
-import ContactList from "./components/ContactList";
-import Filter from "./components/Filter";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-export default function App() {
-  const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(fetchContacts());
-  }, [dispatch]);
+import Navigation from "./components/Navigation";
+import PrivateRoute from "./components/PrivateRoute";
 
+import RegisterPage from "./pages/RegisterPage";
+import LoginPage from "./pages/LoginPage";
+import ContactsPage from "./pages/ContactsPage";
+
+function App() {
   return (
-    <Container>
-      <Title>Книга контактів</Title>
+    <>
+      <Navigation />
 
-      <SectionTitle>Додати контакт</SectionTitle>
-      <ContactForm />
-
-      <SectionTitle>Пошук</SectionTitle>
-      <Filter />
-
-      <SectionTitle>Контакти</SectionTitle>
-      <ContactList />
-    </Container>
+      <Routes>
+        <Route path="/" element={<Navigate to="/login" replace />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route
+          path="/contacts"
+          element={
+            <PrivateRoute>
+              <ContactsPage />
+            </PrivateRoute>
+          }
+        />
+      </Routes>
+    </>
   );
 }
+
+export default App;
